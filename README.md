@@ -1,11 +1,11 @@
 # js-object_oriented_programming
 
 ## 생활코딩 객체지향 프로그래밍
-리액트를 공부하기 전 먼저 선행학습이 필요한 객체 지향 프로그래밍 수업 시작
+리액트를 공부하기 전 먼저 선행학습이 필요한 객체 지향 프로그래밍 수업 시작    
 객체 == "서로 연관된 변수와 함수를 그룹핑하고 이름을 붙인 것"
 
 ### 3.1. 객체의 기본
-객체는 중괄호로 안에 key : value 형태로 생성 해 줍니다.
+객체는 중괄호 안에 key : value 형태로 이루어져 있습니다.
 ```
 var memberObject = {
   manager : 'wj',
@@ -13,7 +13,7 @@ var memberObject = {
   designer: 'jy'
 }
 ```   
-객체의 값을 가져오기 위해서는 점표기법가 괄호표기법 두가지 방식이 있습니다.
+객체의 값을 가져오기 위해서는 점표기법가 괄호표기법 두가지 방식이 있습니다.    
 점표기법을 통해 값을 불러오지 못하는 경우(ex: 띄어쓰기, 변수) 괄호표기법을 사용해 값을 불러 올 수 있습니다.
 ```
 console.log("memberObject.designer", memberObject.designer);
@@ -27,12 +27,12 @@ memberObject.designer = 'yj';
 delete memberObject.designer
 
 console.log("memberObject.designer", memberObject.designer);
-jy
+yj
 undefined
 ```
 
 ### 3.2. 객체와 반복문
-객체는 forin문을 사용할 수 있고 값 호출 시 괄호표기법을 사용해 호출
+객체는 반복문을 사용할 수 있고 값 호출 시 점표기법은 변수를 사용할 수 없기 때문에 괄호표기법을 사용해 값을 불러옵니다.
 ```
 var memberObject = {
     manager : 'wj',
@@ -119,7 +119,7 @@ console.log('d1.getMonth()', d1.getMonth());
 ```
 
 ### 6.3. constructor 만들기
-new 함수명()는 객체를 생성하는 생성자 함수라고 부른다.
+new 함수명()은 객체를 생성해주는 생성자 함수라고 부른다.
 ```
 function Person(name, first, second, third){
     this.name = name,
