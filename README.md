@@ -233,7 +233,7 @@ console.log('kim.sum()', kim.sum());
 console.log('kim.avg()', kim.avg());
 ```
 
-### super
+### 12. super
 super() 괄호가 있는 경우 부모 class의 생성자, super 괄호가 없는 경우는 부모 class 자체를 뜻한다.
 supper가 없는 경우 자식 class에서 부모 class가 가진 기능에 새로운 것을 추가 할 때 부모class를 다시 작성해야되는 문제점이 발생하여
 상속이 가지는 이점이 사라지게 됩니다.
