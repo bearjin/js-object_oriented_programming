@@ -135,3 +135,133 @@ console.log('new Person()', new Person());
 var kim = new Person('kim', 10, 20, 30);
 var lee = new Person('lee', 10, 10, 10);
 ```
+
+### 7.1. prototype이 필요한 이유
+생성자 함수를 통해 객체를 생성할때마다 해당 객체의 속성을 메모리에 할당하게 되어 많은 메모리를 사용하게 됩니다.
+하지만 프로토타입을 통해 정의함으로서 모든 객체들이 참조하여 사용할 수 있고 메모리도 효율적으로 사용할 수 있습니다.
+메소드의 재정의가 필요한 경우 따로 커스터마이징이 가능해 유지보수에도 이점이 있습니다.
+
+### 7.2. prototype을 이용해서 재사용성을 높이기
+자바스크립트는 메소드를 호출 할 때 객체에 메소드가 있는지 찾고, 객체 내에 호출한 메소드가 없을 때 프로토타입에서 메소드를 찾습니다.
+```
+function Person(name, first, second){
+    this.name = name,
+    this.first = first,
+    this.second = second
+}
+Person.prototype.sum = function(){
+    return 'prototype : ' + (this.first + this.second);
+}
+
+var kim = new Person('kim', 10, 20);
+kim.sum = function(){
+    return 'this : ' + (this.first + this.second);
+}
+var lee = new Person('lee', 10, 10);
+
+console.log("kim.sum()", kim.sum()); 
+console.log("lee.sum()", lee.sum());
+```
+
+### 8.1. Classes
+다른 컴퓨터 언어들에서 객체를 생성하는 기능으로 class라는 기능이 존재했지만 자바스크립트에서는 없었고 ES6에서 추가되었습니다. IE 브라우저에서 미지원 하지만 기존의 자바스크립트를 기반으로 새롭게 추가된 기능이기 때문에 바벨을 통해 컴파일러하여 미지원 브라우저에서도 사용 가능합니다.
+
+### 9. Class의 constructor function
+객체를 생성할 때 초기 속성 값들을 지정해주는 방법으로 class 안에 constructor 함수를 사용합니다. class 안에서 function 은 생략해서 작성합니다.
+```
+class Person{
+    constructor(name, first, second){
+        this.name = name,
+        this.first = first,
+        this.second = second;
+        console.log('constructor');
+    }
+}
+
+var kim = new Person('kim', 10, 20);
+console.log('kim', kim);
+```
+
+### 10. 메소드 구현
+class 안에 메소드를 정의하여 프로토타입과 같이 사용할 수 있습니다.
+```
+class Person{
+    constructor(name, first, second){
+        this.name = name,
+        this.first = first,
+        this.second = second;
+        console.log('constructor');
+    }
+    sum (){
+        return 'prototype : ' + (this.first + this.second);
+    }
+}
+
+var kim = new Person('kim', 10, 20);
+kim.sum = function(){
+    return 'this : ' + (this.first + this.second);
+}
+var lee = new Person('lee', 10, 10);
+
+console.log("kim.sum()", kim.sum()); 
+console.log("lee.sum()", lee.sum());
+```
+
+### 11. 상속
+class 에서 extends를 통해 상속을 사용할 수가 있습니다. 상속을 통해 중복되는 코드를 생략 할 수 있습니다. 
+새로운 기능을 추가하고 싶을 때 부모 class(원본)를 건드리지 않고 자식 class를 생성하여 새로운 메소드를 추가 할 수 있어 안전합니다. 
+부모 class를 수정하여 모든 자식 class들도 수정할 수 있어 효율적입니다.
+```
+class Person{
+    constructor(name, first, second){
+        this.name = name,
+        this.first = first,
+        this.second = second;
+    }
+    sum (){
+        return this.first + this.second;
+    }
+}
+class PersonPlus extends Person{
+    avg (){
+        return (this.first + this.second) / 2;
+    }
+}
+
+var kim = new PersonPlus('kim', 10, 20);
+console.log('kim.sum()', kim.sum());
+console.log('kim.avg()', kim.avg());
+```
+
+### super
+super() 괄호가 있는 경우 부모 class의 생성자, super 괄호가 없는 경우는 부모 class 자체를 뜻한다.
+supper가 없는 경우 자식 class에서 부모 class가 가진 기능에 새로운 것을 추가 할 때 부모class를 다시 작성해야되는 문제점이 발생하여
+상속이 가지는 이점이 사라지게 됩니다.
+```
+class Person{
+    constructor(name, first, second){
+        this.name = name,
+        this.first = first,
+        this.second = second;
+    }
+    sum (){
+        return this.first + this.second;
+    }
+}
+class PersonPlus extends Person{
+    constructor(name, first, second, third){
+        super(name, first, second)
+        this.third = third;
+    }
+    sum (){
+        return super.sum() + this.third;
+    }
+    avg (){
+        return (this.first + this.second + this.third) / 3;
+    }
+}
+
+var kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.sum()', kim.sum());
+console.log('kim.avg()', kim.avg());
+```
