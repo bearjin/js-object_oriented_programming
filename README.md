@@ -265,3 +265,88 @@ var kim = new PersonPlus('kim', 10, 20, 30);
 console.log('kim.sum()', kim.sum());
 console.log('kim.avg()', kim.avg());
 ```
+
+### 13.1. object inheritance
+자바스크립트에서는 객체가 다른 객체를 상속 받을 수도 있고 상속 관계를 바꿀 수도 있습니다.
+객체를 연결해주는 것을 prototype link, prototype link가 가르키는 객체를 prototype object 라고 부릅니다. 
+
+### 13.2. __proto__
+객체가 다른 객체를 상속 받을 수 있도록 해줍니다. __proto__를 통해 값을 참조만 하기 때문에 값을 변경하여도 prototype object는 변하지 않습니다.
+```
+var superObj = {superVal : 'super'}
+var subObj = {subVal : 'sub'}
+
+subObj.__proto__ = superObj;
+console.log('subObj.subVal =>', subObj.subVal);
+console.log('subObj.superVal =>', subObj.superVal);
+
+subObj.superVal = 'sub';
+console.log('superObj.superVal =>', superObj.superVal);
+```
+
+### 13.3. Obejct.create()
+객체끼리를 연결할 때 __proto__를 사용하는것보다 Object.create()를 통해 동일한 기능을 사용할 수 있고 표준이기 때문에 권장합니다.
+```
+var superObj = {superVal : 'super'}
+// var subObj = {subVal : 'sub'}
+// subObj.__proto__ = superObj;
+var subObj = Object.create(superObj);
+subObj.subVal = 'sub';
+
+console.log('subObj.subVal =>', subObj.subVal);
+console.log('subObj.superVal =>', subObj.superVal);
+
+subObj.superVal = 'sub';
+console.log('superObj.superVal =>', superObj.superVal);
+```
+
+### 13.4. 객체상속의 사용
+```
+var kim = {
+    name : 'kim',
+    first : 10, second : 20,
+    sum: function(){
+        return this.first + this.second
+    }
+}
+var lee = Object.create(kim);
+lee.name = 'lee';
+lee.first = 10;
+lee.second = 10;
+lee.avg = function(){
+    return (this.first + this.second) / 2;
+}
+console.log('lee.sum() : ', lee.sum());
+console.log('lee.avg() : ', lee.avg());
+```
+
+### 14.1. 객체와 함수
+
+### 14.2. call
+모든 함수는 call() 메소드를 가지고 있고 call()은 실행 될 때 첫번째 인자를 함수의 this 로 지정해주고 함수에 매개변수가 있는 경우 두번째 인자부터 인자값으로 받습니다.
+```
+var kim = {name : 'kim',first : 10,second : 20}
+var lee = {name : 'lee',first : 10,second : 10}
+function sum(prefix){
+    return prefix + (this.first + this.second);
+}
+// sum();
+console.log('sum.call(kim)', sum.call(kim, '=> ')); // apply
+console.log('sum.call(lee)', sum.call(lee, ': ')); 
+```
+
+### 14.3. bind
+call과 같이 함수의 this를 지정하지만 bind는 내부적으로 사용 될 this값을 지정한 새로운 함수를 생성합니다.
+```
+var kim = {name : 'kim',first : 10,second : 20}
+var lee = {name : 'lee',first : 10,second : 10}
+function sum(prefix){
+    return prefix + (this.first + this.second);
+}
+// sum();
+console.log('sum.call(kim)', sum.call(kim, '=> ')); // apply
+console.log('sum.call(lee)', sum.call(lee, ': ')); 
+
+var kimSum = sum.bind(kim, '-> ');
+console.log('kimSum()', kimSum());
+```
