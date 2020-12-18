@@ -320,8 +320,6 @@ console.log('lee.sum() : ', lee.sum());
 console.log('lee.avg() : ', lee.avg());
 ```
 
-### 14.1. 객체와 함수
-
 ### 14.2. call
 모든 함수는 call() 메소드를 가지고 있고 call()은 실행 될 때 첫번째 인자를 함수의 this 로 지정해주고 함수에 매개변수가 있는 경우 두번째 인자부터 인자값으로 받습니다.
 ```
@@ -350,3 +348,55 @@ console.log('sum.call(lee)', sum.call(lee, ': '));
 var kimSum = sum.bind(kim, '-> ');
 console.log('kimSum()', kimSum());
 ```
+
+### 15. prototype vs proto
+자바스크립트에서 함수는 객체입니다. 그렇기 때문에 함수는 프로퍼티를 가지고 있습니다.   
+Person이란 함수를 생성할 때 Person prototype 이란 객체가 같이 생성됩니다.    
+또한 Person에는 prototype 프로퍼티가 생성되어 이 프로퍼티는 Person prototype을 가르키게 됩니다.   
+Person prototype은 constructor 프로퍼티를 가지며 이 프로퍼티는 Person을 가르키게 되어 서로를 바라보게 됩니다.   
+new를 통해 new Person() 생성자 함수를 생성하여 객체를 만들게 되면 객체에 __proto__ 프로퍼티가 생성되며 이 프로퍼티는 Person prototype을 바라보게 됩니다.
+
+### 16.2. 생성자 함수를 통한 상속 : 부모 생성자 실행
+```
+function Person(name, first, second){
+    this.name = name;
+    this.first = first;
+    this.second = second;
+}
+Person.prototype.sum = function(){
+    return this.first + this.second;
+}
+
+function PersonPlus(name, first, second, third){
+    Person.call(this, name, first, second);
+    this.third = third;
+}
+PersonPlus.prototype.avg = function(){
+    return (this.first + this.second + this.third) / 3;
+}
+
+var kim = new PersonPlus('kim', 10, 20, 30);
+console.log('kim.sum()', kim.sum());
+console.log('kim.avg()', kim.avg());
+```
+
+### 16.3. 생성자 함수를 통한 상속 : 부모와 연결하기
+```
+// PersonPlus.prototype.__proto__ = Person.prototype;
+PersonPlus.prototype = Object.create(Person.prototype);
+```
+
+### 16.4. 생성자 함수를 통한 상속 : constructor 속성은 무엇인가?
+constructor는 객체를 생성한 생성자를 나타냅니다. 이를 통해 constructor를 가지고 객체가 어디에서 생성 되었는지를 확인 할 수 있고 new 를 통해 새로운 객체를 만들어 기능을 가져다 사용할 수 있습니다. 
+
+### 16.5. 생성자 함수를 통한 상속 : constructor 속성 바로잡기
+Object.create()를 통해 생성된 객체는 prototype을 재정의 하기 때문에 constructor가 상속하는 객체로 변경 되어 다시 정의를 해줘야 합니다.   
+__proto__를 사용하는 경우에는 prototype이 재정의 되지 않아 constructor가 변경되지 않지만 비표준이기 때문에 Obeject.create()를 사용 후 constructor를 재정의 하거나 class를 사용하는 것이 좋습니다.
+```
+// PersonPlus.prototype.__proto__ = Person.prototype;
+PersonPlus.prototype = Object.create(Person.prototype);
+PersonPlus.prototype.constructor = PersonPlus;
+```
+
+### 후기
+처음에는 리액트를 공부하기 위해 스터디를 시작했는데 앞으로 자바스크립트를 계속해서 사용하고 활용하기 위해서는 자바스크립트가 가진 객체지향적 특성에 대한 이해가 필수적이고 중요하다는 것을 느끼고 배우게 되었다. 이해가 완벽하게 되지 않은 부분들도 있지만 예전에 블로그들의 글을 보고 공부했을 때 전혀 이해하지 못했던 부분들이 많이 해결 되어 스터디를 시작하길 잘했다고 생각한다. 이제는 리액트를 공부하면서 완벽히 이해가 되는 날이 오지 않을까... 계속해서 공부를 해야겠다...
